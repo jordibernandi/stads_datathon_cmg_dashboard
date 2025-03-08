@@ -6,6 +6,13 @@ import AgeGenderData from './graph/AgeGenderData';
 import GenderRiskData from './graph/GenderRiskData';
 import RiskGroupData from './graph/AgeRiskData';
 import { ScrollArea } from './ui/scroll-area';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const StateInfo: React.FC = () => {
     const { masterState } = useFilterStore();
@@ -21,15 +28,35 @@ const StateInfo: React.FC = () => {
     }
 
     return (
-        <ScrollArea className="h-[1px] flex-grow w-full overflow-y-auto">
+        <ScrollArea className="h-0 flex-1 w-full">
             <h2 className="text-2xl font-bold mb-4">{masterState.name}</h2>
             <div className="space-y-2">
                 <p><span className="font-medium">Vaccine Count:</span> {masterState.vaccine_count.toLocaleString()}</p>
             </div>
 
-            <AgeGenderData />
-            <GenderRiskData />
-            <RiskGroupData />
+            <Carousel className="w-full my-6">
+                <CarouselContent>
+                    <CarouselItem>
+                        <div className="p-1">
+                            <AgeGenderData />
+                        </div>
+                    </CarouselItem>
+                    <CarouselItem>
+                        <div className="p-1">
+                            <GenderRiskData />
+                        </div>
+                    </CarouselItem>
+                    <CarouselItem>
+                        <div className="p-1">
+                            <RiskGroupData />
+                        </div>
+                    </CarouselItem>
+                </CarouselContent>
+                <div className="flex justify-center mt-2">
+                    <CarouselPrevious className="relative mr-2" />
+                    <CarouselNext className="relative" />
+                </div>
+            </Carousel>
         </ScrollArea>
     );
 };

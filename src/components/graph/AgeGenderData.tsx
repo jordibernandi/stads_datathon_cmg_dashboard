@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useFilterStore } from "@/store";
-import { fetchStateAgeGenderData } from "@/services/api";
+import { fetchLlmGenAgeGenderData, fetchStateAgeGenderData } from "@/services/api";
 
 // Dynamically import Plotly to prevent SSR issues in Next.js
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -12,6 +12,8 @@ const AgeGenderData: React.FC = () => {
     const { masterState, masterEndDate, masterStartDate } = useFilterStore(); // Get selected state from Zustand store
     const [ageGenderData, setAgeGenderData] = useState<{ absolute: number; age_group: string; gender: string }[]>([]);
     const [loading, setLoading] = useState(false);
+    const [llmAnalysis, setLlmAnalysis] = useState<string | null>(null);
+    const [llmLoading, setLlmLoading] = useState(false);
 
     useEffect(() => {
         if (!masterState) return;
@@ -32,6 +34,33 @@ const AgeGenderData: React.FC = () => {
 
         fetchData();
     }, [masterState, masterStartDate, masterEndDate]);
+
+    const handleAnalysisClick = async () => {
+        if (!masterState) return;
+
+        setLlmLoading(true);
+        setLlmAnalysis(null);
+
+        try {
+            const result = await fetchLlmGenAgeGenderData({
+                fromDate: masterStartDate,
+                toDate: masterEndDate,
+                kvRegion: masterState.name,
+                data: ageGenderData
+            });
+
+            if (result && result.analysis) {
+                setLlmAnalysis(result.analysis);
+            } else {
+                setLlmAnalysis("No analysis available");
+            }
+        } catch (error) {
+            console.error('Error fetching LLM analysis:', error);
+            setLlmAnalysis("Error fetching analysis");
+        } finally {
+            setLlmLoading(false);
+        }
+    };
 
     // Prepare Plotly Data (Group by Gender)
     const plotData = ["f", "m"].map((gender) => ({
@@ -57,9 +86,32 @@ const AgeGenderData: React.FC = () => {
                 <div className="text-center">Loading data...</div>
             ) : ageGenderData.length === 0 ? (
                 <div className="text-center">No data available</div>
-            ) : (
-                <Plot data={plotData} layout={layout} config={{ responsive: true }} style={{ width: "80%", height: "500px" }} />
-            )}
+            ) : <>
+                <Plot data={plotData} layout={layout} config={{ responsive: true }} style={{ width: "100%" }} />
+
+                <div className="mt-4">
+                    <button
+                        onClick={handleAnalysisClick}
+                        disabled={llmLoading}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
+                    >
+                        {llmLoading ? "Generating Analysis..." : "Generate AI Analysis"}
+                    </button>
+                </div>
+
+                {llmLoading && (
+                    <div className="mt-4 text-center">
+                        <p>Analyzing data, please wait...</p>
+                    </div>
+                )}
+
+                {llmAnalysis && (
+                    <div className="mt-4 p-4 border rounded bg-gray-50">
+                        <h4 className="font-semibold mb-2">AI Analysis</h4>
+                        <div className="whitespace-pre-line">{llmAnalysis}</div>
+                    </div>
+                )}
+            </>}
         </div>
     );
 };

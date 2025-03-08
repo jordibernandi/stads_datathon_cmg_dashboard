@@ -66,7 +66,7 @@ const AgeRiskData: React.FC = () => {
                     data={plotData}
                     layout={layout}
                     config={{ responsive: true }}
-                    style={{ width: "80%", height: "500px" }}
+                    style={{ width: "100%" }}
                 />
             )}
         </div>

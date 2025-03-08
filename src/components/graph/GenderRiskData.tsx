@@ -57,7 +57,7 @@ const GenderRiskData: React.FC = () => {
             ) : genderRiskData.length === 0 ? (
                 <div className="text-center">No data available</div>
             ) : (
-                <Plot data={plotData} layout={layout} config={{ responsive: true }} style={{ width: "80%", height: "500px" }} />
+                <Plot data={plotData} layout={layout} config={{ responsive: true }} style={{ width: "100%" }} />
             )}
         </div>
     );
