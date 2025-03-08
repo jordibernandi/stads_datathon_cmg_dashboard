@@ -2,15 +2,37 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, GeoJSON, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { germanyStates } from '@/data/germanyStates';
 import { useFilterStore } from '@/store';
+import { fetchStateVaccineCountData } from '@/services/api';
+import { StateData } from '@/types/StateData';
+
+const stateIdMap: { [key: string]: string } = {
+    'Baden-Württemberg': 'DE-BW',
+    'Bayern': 'DE-BY',
+    'Berlin': 'DE-BE',
+    'Brandenburg': 'DE-BB',
+    'Bremen': 'DE-HB',
+    'Hamburg': 'DE-HH',
+    'Hessen': 'DE-HE',
+    'Mecklenburg-Vorpommern': 'DE-MV',
+    'Niedersachsen': 'DE-NI',
+    'Nordrhein-Westfalen': 'DE-NW',
+    'Rheinland-Pfalz': 'DE-RP',
+    'Saarland': 'DE-SL',
+    'Sachsen': 'DE-SN',
+    'Sachsen-Anhalt': 'DE-ST',
+    'Schleswig-Holstein': 'DE-SH',
+    'Thüringen': 'DE-TH',
+};
 
 const GermanyMap: React.FC = () => {
     const [geoData, setGeoData] = useState<any>(null);
-    const { masterState, setMasterState } = useFilterStore();
+    const [stateData, setStateData] = useState<StateData[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const { masterState, setMasterState, masterStartDate, masterEndDate } = useFilterStore();
 
     const handleStateClick = (id: string) => {
-        const state = germanyStates.find(state => state.id === id);
+        const state = stateData.find(state => state.id === id);
         setMasterState(state || null);
     };
 
@@ -24,10 +46,34 @@ const GermanyMap: React.FC = () => {
             .catch(error => console.error('Error loading GeoJSON:', error));
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const result = await fetchStateVaccineCountData({ fromDate: masterStartDate, toDate: masterEndDate });
+                if (result) {
+                    const formattedData = result.map((state: any) => ({
+                        id: stateIdMap[state.name] || 'UNKNOWN',
+                        name: state.name,
+                        vaccine_count: state.vaccine_count
+                    }));
+                    setStateData(formattedData);
+                    setMasterState(null);
+                }
+            } catch (error) {
+                console.error('Error fetching state data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [masterStartDate, masterEndDate]);
+
     // Get the population range for color scaling
-    const populations = germanyStates.map(state => state.population);
-    const minPopulation = Math.min(...populations);
-    const maxPopulation = Math.max(...populations);
+    const vaccineCount = stateData.map(state => state.vaccine_count);
+    const minVaccineCount = Math.min(...vaccineCount);
+    const maxVaccineCount = Math.max(...vaccineCount);
 
     // Generate color based on population density
     const getStateColor = (stateId: string) => {
@@ -35,11 +81,11 @@ const GermanyMap: React.FC = () => {
             return '#2563eb'; // Highlight selected state
         }
 
-        const state = germanyStates.find(s => s.id === stateId);
+        const state = stateData.find(s => s.id === stateId);
         if (!state) return '#d1e7ff'; // Default light blue
 
         // Calculate color intensity based on population
-        const normalized = (state.population - minPopulation) / (maxPopulation - minPopulation);
+        const normalized = (state.vaccine_count - minVaccineCount) / (maxVaccineCount - minVaccineCount);
         const intensity = Math.floor(normalized * 200); // 0-200 scale for blue intensity
 
         return `rgb(${55 + intensity}, ${137 + (normalized * 50)}, ${230})`; // Blue scale
@@ -61,13 +107,14 @@ const GermanyMap: React.FC = () => {
     // Event handlers for GeoJSON layer
     const onEachFeature = (feature: any, layer: any) => {
         const stateId = feature.properties.id;
-        const state = germanyStates.find(s => s.id === stateId);
+        const state = stateData.find(s => s.id === stateId);
 
         if (state) {
             layer.bindTooltip(state.name);
 
             layer.on({
                 click: () => {
+                    console.log("KESINI");
                     handleStateClick(stateId);
                 },
                 mouseover: (e: any) => {
@@ -88,12 +135,17 @@ const GermanyMap: React.FC = () => {
         }
     };
 
-    if (!geoData) {
-        return <div className="border rounded shadow bg-white p-4 h-96 flex items-center justify-center">Loading map data...</div>;
+    // Show loading message if data is still loading
+    if (loading || !geoData || stateData.length === 0) {
+        return (
+            <div className="flex-grow border rounded shadow bg-white p-4 flex items-center justify-center h-[600px] w-full">
+                Loading map data...
+            </div>
+        );
     }
 
     return (
-        <div className="border rounded shadow bg-white p-4">
+        <div className="flex-grow border rounded shadow bg-white p-4">
             <MapContainer
                 center={[51.1657, 10.4515]}
                 zoom={6}
@@ -102,8 +154,8 @@ const GermanyMap: React.FC = () => {
             >
                 <TileLayer
                     attribution=''
-                    url=""
-                    opacity={0.0}
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    opacity={0.3}
                 />
 
                 <GeoJSON
@@ -114,7 +166,7 @@ const GermanyMap: React.FC = () => {
             </MapContainer>
 
             <div className="mt-4">
-                <h3 className="text-lg font-semibold mb-2">Population Density</h3>
+                <h3 className="text-lg font-semibold mb-2">Vaccine Count Density</h3>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center">
                         <div className="w-4 h-4" style={{ backgroundColor: `rgb(55, 137, 230)` }}></div>

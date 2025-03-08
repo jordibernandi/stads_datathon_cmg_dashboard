@@ -12,7 +12,7 @@ const DateRange = () => {
     const { masterStartDate, masterEndDate, setMasterStartDate, setMasterEndDate } = useFilterStore();
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-6">
             <div className="flex flex-col gap-2">
                 <span className="tracking-wide uppercase text-xs">Start Date</span>
                 <div className="flex flex-wrap gap-2">
@@ -65,6 +65,7 @@ const DateRange = () => {
                                 selected={masterEndDate ? new Date(masterEndDate) : undefined}
                                 onSelect={(dateString) => {
                                     const formattedDate = dateString ? new Date(dateString).toLocaleDateString('en-US') : "";
+                                    console.log("formatted", formattedDate);
                                     setMasterEndDate(formattedDate);
                                 }}
                                 initialFocus

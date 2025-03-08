@@ -12,8 +12,8 @@ interface FilterState {
 
 export const useFilterStore = create<FilterState>((set) => ({
     masterState: null,
-    masterStartDate: "",
-    masterEndDate: "",
+    masterStartDate: "7/30/2024",
+    masterEndDate: "2/2/2025",
     setMasterState: (masterState) => set(() => ({ masterState })),
     setMasterStartDate: (masterStartDate) => set(() => ({ masterStartDate })),
     setMasterEndDate: (masterEndDate) => set(() => ({ masterEndDate })),
