@@ -94,10 +94,17 @@ def generate_text_from_base64(image_path):
     genai.configure(api_key="AIzaSyD_waaffGGKTm73y0flZItSsrO3VtAgrKE")
     model = genai.GenerativeModel('gemini-2.0-flash-exp')
     prompt = """
-    Analyze the given image carefully. The image contains the graph related to flu vaccination.
+    QUESTIONS:
+    1. Analyze the given image carefully. The image contains the graph related to flu vaccination.
     Look carefully at the x axis, y axis and the values. After careful observation, describe the content of the graph to a doctor.
     Explain without using the colour of the graph but rather use the values, labels and quantities.
-    
+    2. Explain the reason behind the values in the graph based on title of the graph, date, season, flu outbreak, and any other parameters etc.
+    GUIDELINES:
+    1. Do not write anything other than the required explanations.
+    2. Answer to the point.
+    3. Divide the text into paragraphs, one for each question asked.
+    4. Do not provide numbering for paragraphs.
+    5. Do not prpvide title to the text output.
     """
     base64_image = ""
     with open(image_path, "rb") as image_file:
