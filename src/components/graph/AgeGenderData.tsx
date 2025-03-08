@@ -49,8 +49,8 @@ const AgeGenderData: React.FC = () => {
                 data: ageGenderData
             });
 
-            if (result && result.analysis) {
-                setLlmAnalysis(result.analysis);
+            if (result && result.response) {
+                setLlmAnalysis(result.response);
             } else {
                 setLlmAnalysis("No analysis available");
             }
