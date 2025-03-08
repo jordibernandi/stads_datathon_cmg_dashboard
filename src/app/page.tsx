@@ -7,13 +7,14 @@ export default function Home() {
   return (
     <div className="flex flex-grow">
       <div className="grid grid-cols-6 gap-8 w-full">
-        <div className="col-span-2">
+        {/* Fixed FilterWrapper */}
+        <div className="col-span-2 h-screen sticky top-0">
           <FilterWrapper />
         </div>
-        <div className="col-span-4 flex flex-col gap-4">
-          {/* <Suspense key={searchParamsKey} fallback={<ContentWrapperLoading />}> */}
+
+        {/* Scrollable StateInfo */}
+        <div className="col-span-4 flex flex-col gap-4 overflow-y-auto" style={{ height: 'calc(100vh - 200px)' }}>
           <StateInfo />
-          {/* </Suspense> */}
         </div>
       </div>
     </div>

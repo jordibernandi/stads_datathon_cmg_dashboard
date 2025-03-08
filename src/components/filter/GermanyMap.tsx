@@ -114,7 +114,6 @@ const GermanyMap: React.FC = () => {
 
             layer.on({
                 click: () => {
-                    console.log("KESINI");
                     handleStateClick(stateId);
                 },
                 mouseover: (e: any) => {
@@ -135,11 +134,11 @@ const GermanyMap: React.FC = () => {
         }
     };
 
-    // Show loading message if data is still loading
     if (loading || !geoData || stateData.length === 0) {
         return (
-            <div className="flex-grow border rounded shadow bg-white p-4 flex items-center justify-center h-[600px] w-full">
-                Loading map data...
+            <div className="flex-grow border rounded shadow bg-white p-4 flex flex-col items-center justify-center h-[710px] w-full">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+                <p className="mt-4 text-gray-600 animate-pulse">Loading map data...</p>
             </div>
         );
     }

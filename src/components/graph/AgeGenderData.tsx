@@ -18,6 +18,8 @@ const AgeGenderData: React.FC = () => {
     useEffect(() => {
         if (!masterState) return;
 
+        setLlmAnalysis(null);
+
         const fetchData = async () => {
             setLoading(true);
             try {
@@ -28,7 +30,9 @@ const AgeGenderData: React.FC = () => {
             } catch (error) {
                 console.error('Error fetching state data:', error);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             }
         };
 
@@ -79,15 +83,18 @@ const AgeGenderData: React.FC = () => {
     };
 
     return (
-        <div className="border rounded shadow bg-white p-4 mt-6">
+        <div className="border rounded shadow bg-white p-4 mt-6 min-h-[600px]">
             <h3 className="text-lg font-semibold mb-2">Age & Gender-Based Vaccination Data</h3>
 
             {loading ? (
-                <div className="text-center">Loading data...</div>
+                <div className="flex-grow bg-white p-4 flex flex-col items-center justify-center h-[555px] w-full">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-solid"></div>
+                    <p className="mt-4 text-gray-600 animate-pulse">Loading map data...</p>
+                </div>
             ) : ageGenderData.length === 0 ? (
                 <div className="text-center">No data available</div>
             ) : <>
-                <Plot data={plotData} layout={layout} config={{ responsive: true }} style={{ width: "100%" }} />
+                <Plot data={plotData} layout={layout} config={{ responsive: true }} style={{ width: "100%", height: "500px" }} />
 
                 <div className="mt-4">
                     <button

@@ -65,7 +65,6 @@ const DateRange = () => {
                                 selected={masterEndDate ? new Date(masterEndDate) : undefined}
                                 onSelect={(dateString) => {
                                     const formattedDate = dateString ? new Date(dateString).toLocaleDateString('en-US') : "";
-                                    console.log("formatted", formattedDate);
                                     setMasterEndDate(formattedDate);
                                 }}
                                 initialFocus
