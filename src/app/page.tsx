@@ -13,7 +13,7 @@ export default function Home() {
         </div>
 
         {/* Scrollable StateInfo */}
-        <div className="col-span-4 flex flex-col gap-4 overflow-y-auto" style={{ height: 'calc(100vh - 200px)' }}>
+        <div className="col-span-4 flex flex-col gap-4">
           <StateInfo />
         </div>
       </div>

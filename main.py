@@ -16,6 +16,8 @@ from random import randint
 app = Flask(__name__)
 CORS(app)
 
+history = ""
+
 @app.route('/plot')
 def dataframe_plots(df, x_val, y_val, hue_val, title_val, x_label):
     plt.figure(figsize=(12, 5))
@@ -152,6 +154,15 @@ def llm_generation_gender_risk_stats():
     response = generate_text_from_base64(file_name)
     os.remove(file_name)
     print(response)
+    return {"response" : response}
+
+@app.route('/llm_chatbot', methods=['POST'])
+def llm_chatbot():
+    global history
+    data = request.get_json()
+    incoming = data.get('question')
+    response = chatbot(history, incoming)
+    history = history + "Question:" + incoming + "LLM Response:" + response
     return {"response" : response}
 
 if __name__ == '__main__':

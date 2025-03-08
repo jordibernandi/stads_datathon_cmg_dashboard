@@ -12,15 +12,31 @@ const ChatBotWidget = () => {
 
     const toggleChat = () => setIsOpen(!isOpen);
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (!input.trim()) return;
-        setMessages([...messages, { sender: "user", text: input }]);
+      
+        // Add user message
+        const userMessage = { sender: "user", text: input };
+        setMessages((prev) => [...prev, userMessage]);
         setInput("");
-        // Simulate bot response
-        setTimeout(() => {
-            setMessages((prev) => [...prev, { sender: "bot", text: "Hello! How can I help?" }]);
-        }, 1000);
-    };
+      
+        try {
+          // Call API
+          const response = await fetch("http://localhost:5000/llm_chatbot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: input }),
+          });
+      
+          const data = await response.json();
+          const botMessage = { sender: "bot", text: data.response }; // Assuming API returns { reply: "text response" }
+      
+          // Update chat with bot response
+          setMessages((prev) => [...prev, botMessage]);
+        } catch (error) {
+          console.error("Error fetching response:", error);
+        }
+      };
 
     return (
         <div className="fixed bottom-4 right-4 flex flex-col items-end">

@@ -4,6 +4,10 @@ import google.generativeai as genai
 import PIL.Image
 import io
 import base64
+import os
+
+context = ""
+geminiAPI = os.getenv('gemini_hackathon')
 
 def format_dateframe(from_date_str, to_date_str, kv_region=""):
     df = pd.read_csv("risk.csv")
@@ -30,7 +34,7 @@ def model_response(image, model_id = "gemini-2.0-flash-exp"):
     Explain without using the colour of the graph but rather use the values, labels and quantities.
     
     """
-    genai.configure(api_key="AIzaSyD_waaffGGKTm73y0flZItSsrO3VtAgrKE")
+    genai.configure(api_key=geminiAPI)
     model = genai.GenerativeModel(model_id)
     response = model.generate_content(
         model=model_id,  
@@ -58,7 +62,7 @@ def generate_text_from_image(image_path):
     Returns:
         The generated text, or None if an error occurs.
     """
-    genai.configure(api_key="AIzaSyD_waaffGGKTm73y0flZItSsrO3VtAgrKE")
+    genai.configure(api_key=geminiAPI)
     model = genai.GenerativeModel('gemini-2.0-flash-exp')
     prompt = """
     Analyze the given image carefully. The image contains the graph related to flu vaccination.
@@ -91,7 +95,7 @@ def generate_text_from_base64(image_path):
     Returns:
         The generated text, or None if an error occurs.
     """
-    genai.configure(api_key="AIzaSyD_waaffGGKTm73y0flZItSsrO3VtAgrKE")
+    genai.configure(api_key=geminiAPI)
     model = genai.GenerativeModel('gemini-2.0-flash-exp')
     prompt = """
     QUESTIONS:
@@ -117,3 +121,19 @@ def generate_text_from_base64(image_path):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+def chatbot(history, question):
+    genai.configure(api_key=geminiAPI)
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
+    prompt = f'''
+    You are a medicine practitioner.
+    Answer the question based on the previous chats:\n {history}.
+    The new question is : {question}.
+    
+    GUIDELINES:
+    1. Provide response like a chat.
+    2. Only answer in 2 sentences.
+    3. Answers should be concise and not detailed.
+    '''
+    response = model.generate_content([prompt])
+    return response.text

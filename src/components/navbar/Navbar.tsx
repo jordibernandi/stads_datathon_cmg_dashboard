@@ -8,7 +8,7 @@ const Navbar = () => {
 
     return (
         <div className={styles.container}>
-            <Link href="/" className={styles.logo}>Team-14</Link>
+            <Link href="/" className={styles.logo}>HEXA</Link>
             <Image
                 src="/compugroup.png"
                 alt="CompuGroup Medical"
