@@ -4,16 +4,6 @@ import google.generativeai as genai
 import PIL.Image
 import io
 import base64
-# from google.generativeai.types import (
-#     FunctionDeclaration,
-#     # GenerateContentConfig,
-#     # GoogleSearch,
-#     # Part,
-#     # Retrieval,
-#     # SafetySetting,
-#     Tool,
-#     # VertexAISearch,
-# )
 
 def format_dateframe(from_date_str, to_date_str, kv_region=""):
     df = pd.read_csv("risk.csv")
