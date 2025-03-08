@@ -14,14 +14,16 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { staticGermanyStates } from '@/data/dataset';
+import LottieBot from './LottieBot';
 
 const StateInfo: React.FC = () => {
     const { masterState } = useFilterStore();
 
     if (!masterState) {
         return (
-            <div className="border rounded shadow bg-white p-4 flex items-center justify-center h-[905px]">
-                <p className="text-gray-500 text-center">
+            <div className="border rounded shadow bg-white p-4 flex items-center justify-center h-[905px] flex-col">
+                <LottieBot />
+                <p className="text-gray-500 text-center mt-2">
                     Select a federal state (Bundesland) on the map to view its information
                 </p>
             </div>
