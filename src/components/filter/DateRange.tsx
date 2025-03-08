@@ -1,18 +1,15 @@
 "use client"
 
-import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useFilterStore } from "@/store";
 
 const DateRange = () => {
-    const searchParams = useSearchParams();
-
-    const paramStart = searchParams.get("start") ?? "";
-    const paramEnd = searchParams.get("end") ?? "";
+    const { masterStartDate, masterEndDate, setMasterStartDate, setMasterEndDate } = useFilterStore();
 
     return (
         <div className="flex flex-col gap-4">
@@ -25,19 +22,20 @@ const DateRange = () => {
                                 variant={"outline"}
                                 className={cn(
                                     "w-[240px] justify-start text-left font-normal",
-                                    !paramStart && "text-muted-foreground"
+                                    !masterStartDate && "text-muted-foreground"
                                 )}
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {paramStart ? format(paramStart, "PPP") : <span>Pick a date</span>}
+                                {masterStartDate ? format(masterStartDate, "PPP") : <span>Pick a date</span>}
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0 z-[9999]" align="start">
                             <Calendar
                                 mode="single"
-                                selected={new Date(paramStart)}
+                                selected={masterStartDate ? new Date(masterStartDate) : undefined}
                                 onSelect={(dateString) => {
                                     const formattedDate = dateString ? new Date(dateString).toLocaleDateString('en-US') : "";
+                                    setMasterStartDate(formattedDate);
                                 }}
                                 initialFocus
                             />
@@ -54,19 +52,20 @@ const DateRange = () => {
                                 variant={"outline"}
                                 className={cn(
                                     "w-[240px] justify-start text-left font-normal",
-                                    !paramEnd && "text-muted-foreground"
+                                    !masterEndDate && "text-muted-foreground"
                                 )}
                             >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {paramEnd ? format(paramEnd, "PPP") : <span>Pick a date</span>}
+                                {masterEndDate ? format(masterEndDate, "PPP") : <span>Pick a date</span>}
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0 z-[9999]" align="start">
                             <Calendar
                                 mode="single"
-                                selected={new Date(paramEnd)}
+                                selected={masterEndDate ? new Date(masterEndDate) : undefined}
                                 onSelect={(dateString) => {
                                     const formattedDate = dateString ? new Date(dateString).toLocaleDateString('en-US') : "";
+                                    setMasterEndDate(formattedDate);
                                 }}
                                 initialFocus
                             />

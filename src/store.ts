@@ -3,7 +3,7 @@ import { StateData } from './types/StateData';
 
 interface FilterState {
     masterState: StateData | null;
-    mastersStartDate: string | null;
+    masterStartDate: string | null;
     masterEndDate: string | null;
     setMasterState: (masterState: StateData | null) => void;
     setMasterStartDate: (mastersStartDate: string) => void;
@@ -12,9 +12,9 @@ interface FilterState {
 
 export const useFilterStore = create<FilterState>((set) => ({
     masterState: null,
-    mastersStartDate: "",
+    masterStartDate: "",
     masterEndDate: "",
     setMasterState: (masterState) => set(() => ({ masterState })),
-    setMasterStartDate: (mastersStartDate) => set(() => ({ mastersStartDate })),
+    setMasterStartDate: (masterStartDate) => set(() => ({ masterStartDate })),
     setMasterEndDate: (masterEndDate) => set(() => ({ masterEndDate })),
 }));
