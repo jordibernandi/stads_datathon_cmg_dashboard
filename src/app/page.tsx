@@ -1,5 +1,5 @@
 import React from 'react';
-import StateInfo from '@/components/StateInfo';
+import StateInfo from '@/components/stateinfo/StateInfo';
 import FilterWrapper from '@/components/filter/FilterWrapper';
 
 export default function Home() {

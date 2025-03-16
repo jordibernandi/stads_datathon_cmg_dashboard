@@ -1,5 +1,5 @@
 import React from "react";
-import animationData from "../../public/greenrobot.json";
+import animationData from "../../../public/greenrobot.json";
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("react-lottie"), { ssr: false });

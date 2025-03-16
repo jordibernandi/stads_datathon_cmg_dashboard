@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { StateData } from './types/StateData';
+import { StateData } from '../types/StateData';
 
 interface FilterState {
     masterState: StateData | null;

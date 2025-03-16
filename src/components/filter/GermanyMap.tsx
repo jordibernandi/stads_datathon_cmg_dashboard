@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, GeoJSON, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useFilterStore } from '@/store';
+import { useFilterStore } from '@/stores/store';
 import { fetchStateVaccineCountData } from '@/services/api';
 import { StateData } from '@/types/StateData';
 

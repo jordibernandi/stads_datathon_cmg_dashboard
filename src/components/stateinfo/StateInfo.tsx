@@ -1,8 +1,8 @@
 "use client"
 
 import React from 'react';
-import { useFilterStore } from '@/store';
-import { ScrollArea } from './ui/scroll-area';
+import { useFilterStore } from '@/stores/store';
+import { ScrollArea } from '../ui/scroll-area';
 import {
     Carousel,
     CarouselContent,
@@ -11,7 +11,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { staticGermanyStates } from '@/data/dataset';
-import LottieBot from './LottieBot';
+import LottieBot from '../lottie/LottieBot';
 import Graph from './graph/Graph';
 import { GermanyState } from '@/types/GermanyState';
 

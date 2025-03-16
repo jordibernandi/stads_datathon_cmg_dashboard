@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useFilterStore } from "@/store";
+import { useFilterStore } from "@/stores/store";
 
 const DateRange = () => {
     const { masterStartDate, masterEndDate, setMasterStartDate, setMasterEndDate } = useFilterStore();
