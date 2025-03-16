@@ -2,9 +2,6 @@
 
 import React from 'react';
 import { useFilterStore } from '@/store';
-import AgeGenderData from './graph/AgeGenderData';
-import GenderRiskData from './graph/GenderRiskData';
-import RiskGroupData from './graph/AgeRiskData';
 import { ScrollArea } from './ui/scroll-area';
 import {
     Carousel,
@@ -15,6 +12,8 @@ import {
 } from "@/components/ui/carousel";
 import { staticGermanyStates } from '@/data/dataset';
 import LottieBot from './LottieBot';
+import Graph from './graph/Graph';
+import { GermanyState } from '@/types/GermanyState';
 
 const StateInfo: React.FC = () => {
     const { masterState } = useFilterStore();
@@ -31,21 +30,17 @@ const StateInfo: React.FC = () => {
     }
 
     const getStateDetailsById = (id: string) => {
-        const state = staticGermanyStates.find((state) => (state as any).id === id);
+        const state = staticGermanyStates.find((state) => (state as GermanyState).id === id);
         return state
             ? {
-                population: (state as any).population,
-                capital: (state as any).capital,
-                area: (state as any).area,
+                population: state.population,
+                capital: state.capital,
+                area: state.area,
             }
-            : null;
+            : { population: 0, capital: "", area: 1 };
     };
 
     const selectedStaticData = getStateDetailsById(masterState.id);
-
-    // const populations = staticGermanyStates.map(state => state.population);
-    // const minPopulation = Math.min(...populations);
-    // const maxPopulation = Math.max(...populations);
 
     const populationDensity = Math.round(selectedStaticData?.population * 1000000 / selectedStaticData?.area);
 
@@ -70,7 +65,7 @@ const StateInfo: React.FC = () => {
                         ></div>
                     </div>
                     <p className="text-sm text-gray-600 mt-1">
-                        {Math.round((selectedStaticData?.population / 18) * 100)}% of Germany's highest population state
+                        {Math.round((selectedStaticData?.population / 18) * 100)}% of Germanys highest population state
                     </p>
                 </div>
             </div>
@@ -84,17 +79,29 @@ const StateInfo: React.FC = () => {
                 <CarouselContent>
                     <CarouselItem>
                         <div className="p-1">
-                            <AgeGenderData />
+                            <Graph
+                                type="ageGender"
+                                title="Vaccinations by Age Group & Gender"
+                                subtitle="Age & Gender-Based Vaccination Data"
+                            />
                         </div>
                     </CarouselItem>
                     <CarouselItem>
                         <div className="p-1">
-                            <GenderRiskData />
+                            <Graph
+                                type="genderRisk"
+                                title="Vaccinations by Gender & Risk Group"
+                                subtitle="Gender-Based Risk Group Vaccination Data"
+                            />
                         </div>
                     </CarouselItem>
                     <CarouselItem>
                         <div className="p-1">
-                            <RiskGroupData />
+                            <Graph
+                                type="ageRisk"
+                                title="Vaccinations by Age Group and Risk Group"
+                                subtitle="Risk Group Vaccination Data"
+                            />
                         </div>
                     </CarouselItem>
                 </CarouselContent>

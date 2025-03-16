@@ -1,4 +1,8 @@
-export const fetchStateVaccineCountData = async (data) => {
+import { DateTimeInputData } from "@/types/DateTimeInputData";
+import { LlmInputData } from "@/types/LlmInputData";
+import { StatsInputData } from "@/types/StatsInputData";
+
+export const fetchStateVaccineCountData = async (data: DateTimeInputData) => {
     try {
         const response = await fetch('http://localhost:5000/state_vaccine_count', {
             method: 'POST',
@@ -10,7 +14,6 @@ export const fetchStateVaccineCountData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);
@@ -22,7 +25,7 @@ export const fetchStateVaccineCountData = async (data) => {
     }
 };
 
-export const fetchStateAgeGenderData = async (data) => {
+export const fetchStateAgeGenderData = async (data: StatsInputData) => {
     try {
         const response = await fetch('http://localhost:5000/state_age_gender_stats', {
             method: 'POST',
@@ -34,7 +37,6 @@ export const fetchStateAgeGenderData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);
@@ -46,7 +48,7 @@ export const fetchStateAgeGenderData = async (data) => {
     }
 };
 
-export const fetchStateGenderRiskData = async (data) => {
+export const fetchStateGenderRiskData = async (data: StatsInputData) => {
     try {
         const response = await fetch('http://localhost:5000/state_gender_risk_stats', {
             method: 'POST',
@@ -58,7 +60,6 @@ export const fetchStateGenderRiskData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);
@@ -70,7 +71,7 @@ export const fetchStateGenderRiskData = async (data) => {
     }
 };
 
-export const fetchStateAgeRiskData = async (data) => {
+export const fetchStateAgeRiskData = async (data: StatsInputData) => {
     try {
         const response = await fetch('http://localhost:5000/state_age_risk_stats', {
             method: 'POST',
@@ -82,7 +83,6 @@ export const fetchStateAgeRiskData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);
@@ -94,7 +94,7 @@ export const fetchStateAgeRiskData = async (data) => {
     }
 };
 
-export const fetchLlmGenAgeGenderData = async (data) => {
+export const fetchLlmGenAgeGenderData = async (data: LlmInputData) => {
     try {
         const response = await fetch('http://localhost:5000/llm_generation_age_gender_stats', {
             method: 'POST',
@@ -106,7 +106,6 @@ export const fetchLlmGenAgeGenderData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);
@@ -118,7 +117,7 @@ export const fetchLlmGenAgeGenderData = async (data) => {
     }
 };
 
-export const fetchLlmGenAgeRiskData = async (data) => {
+export const fetchLlmGenAgeRiskData = async (data: LlmInputData) => {
     try {
         const response = await fetch('http://localhost:5000/llm_generation_age_risk_stats', {
             method: 'POST',
@@ -130,7 +129,6 @@ export const fetchLlmGenAgeRiskData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);
@@ -142,7 +140,7 @@ export const fetchLlmGenAgeRiskData = async (data) => {
     }
 };
 
-export const fetchLlmGenGenderRiskData = async (data) => {
+export const fetchLlmGenGenderRiskData = async (data: LlmInputData) => {
     try {
         const response = await fetch('http://localhost:5000/llm_generation_gender_risk_stats', {
             method: 'POST',
@@ -154,7 +152,6 @@ export const fetchLlmGenGenderRiskData = async (data) => {
 
         if (response.ok) {
             const result = await response.json();
-            console.log(result);
             return result;
         } else {
             console.error('Error fetching data:', response.statusText);

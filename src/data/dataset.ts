@@ -1,4 +1,6 @@
-export const staticGermanyStates: unknown[] = [
+import { GermanyState } from "@/types/GermanyState";
+
+export const staticGermanyStates: GermanyState[] = [
     { id: 'DE-BW', name: 'Baden-Württemberg', population: 11.1, capital: 'Stuttgart', area: 35751 },
     { id: 'DE-BY', name: 'Bayern', population: 13.1, capital: 'München', area: 70550 },
     { id: 'DE-BE', name: 'Berlin', population: 3.7, capital: 'Berlin', area: 891 },

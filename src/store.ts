@@ -3,8 +3,8 @@ import { StateData } from './types/StateData';
 
 interface FilterState {
     masterState: StateData | null;
-    masterStartDate: string | null;
-    masterEndDate: string | null;
+    masterStartDate: string;
+    masterEndDate: string;
     setMasterState: (masterState: StateData | null) => void;
     setMasterStartDate: (mastersStartDate: string) => void;
     setMasterEndDate: (masterEndDate: string) => void;

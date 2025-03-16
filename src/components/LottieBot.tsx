@@ -1,15 +1,16 @@
 import React from "react";
-import Lottie from "react-lottie"; // Import the react-lottie library
-import animationData from "../../public/greenrobot.json"; // Import your lottie animation JSON file
+import animationData from "../../public/greenrobot.json";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 const LottieBot: React.FC = () => {
-    // Define the options for the Lottie animation
     const defaultOptions = {
-        loop: true, // Set the animation to loop
-        autoplay: true, // Set the animation to autoplay
-        animationData, // Your Lottie JSON data
+        loop: true,
+        autoplay: true,
+        animationData,
         rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice", // Adjust rendering as per your need
+            preserveAspectRatio: "xMidYMid slice",
         },
     };
 

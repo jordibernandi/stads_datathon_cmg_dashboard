@@ -50,7 +50,7 @@ const GermanyMap: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const result = await fetchStateVaccineCountData({ fromDate: masterStartDate, toDate: masterEndDate });
+                const result = await fetchStateVaccineCountData({ fromDate: masterStartDate ?? "", toDate: masterEndDate ?? "" });
                 if (result) {
                     const formattedData = result.map((state: any) => ({
                         id: stateIdMap[state.name] || 'UNKNOWN',
