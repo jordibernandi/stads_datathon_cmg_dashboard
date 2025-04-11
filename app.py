@@ -69,20 +69,14 @@ def Patient_IMP():
 
         st.info(f"""📌Patientenname: {filtered_df["Patientenname"][0]} {user_query}""")
 
-        if config["ARCHITECTURE"] == "openai":
-            api_key = config["OPEN_AI_API_KEY"]
-            embedding_model = config["OPEN_AI_EMBEDDING_MODEL"]
-            model = config["OPEN_AI_MODEL_NAME"]
-        else:
-            api_key = config["TOGETHER_AI_API_KEY"]
-            embedding_model = config["HUGGING_FACE_EMBEDDING_MODEL"]
-            model = config["TOGETHER_AI_MODEL_NAME"]
+        api_key = config["TOGETHER_AI_API_KEY"]
+        embedding_model = config["HUGGING_FACE_EMBEDDING_MODEL"]
+        model = config["TOGETHER_AI_MODEL_NAME"]
 
         rag = RagModel(api_key, config["QDRANT_API_KEY"], config["QDRANT_URL"], 
-                        config["QDRANT_COLLECTION_NAME"], embedding_model, config["ARCHITECTURE"], model, number_of_patients)
+                        config["QDRANT_COLLECTION_NAME"], embedding_model, model, number_of_patients)
         
         response = rag.retrieve_data(user_query, vaccinated_patients)
-        print(response)
         st.header("🔗 Relevant Past Patient Vaccination Information")
 
         with st.expander("🔗 Relevant Past Similar Patient"):
@@ -113,14 +107,9 @@ def Patient_Docu_Uploader():
                 uploaded_df = pd.read_json(uploaded_file)
             
             st.write(uploaded_df)
-            if config["ARCHITECTURE"] == "openai":
-                api_key = config["OPEN_AI_API_KEY"]
-                embedding_model = config["OPEN_AI_EMBEDDING_MODEL"]
-                model = config["OPEN_AI_MODEL_NAME"]
-            else:
-                api_key = config["TOGETHER_AI_API_KEY"]
-                embedding_model = config["HUGGING_FACE_EMBEDDING_MODEL"]
-                model = config["TOGETHER_AI_MODEL_NAME"]
+            api_key = config["TOGETHER_AI_API_KEY"]
+            embedding_model = config["HUGGING_FACE_EMBEDDING_MODEL"]
+            model = config["TOGETHER_AI_MODEL_NAME"]
 
             rag = RagModel(api_key, config["QDRANT_API_KEY"], config["QDRANT_URL"], 
                             config["QDRANT_COLLECTION_NAME"], embedding_model, config["ARCHITECTURE"], model)

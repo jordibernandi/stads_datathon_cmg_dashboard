@@ -8,23 +8,17 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_together import Together
 from langchain_core.prompts import PromptTemplate
-from utils import open_ai_prompt
 
 class RagModel():
     def __init__(self, api_keys, qdrant_api_key, qdrant_url, qdrant_collection_name,
-                embedding_model, architecture = "", model="meta-llama/Meta-Llama-3.1-8B-Instruct", number_of_doc = 3):
+                embedding_model, model="meta-llama/Meta-Llama-3.1-8B-Instruct", number_of_doc = 3):
         self.apikeys = api_keys
         self.qdrant_api_key = qdrant_api_key
         self.qdrant_url = qdrant_url
         self.qdrant_collection_name = qdrant_collection_name
-        self.architecture = architecture
         self.model = model
         self.number_of_doc = number_of_doc
-        if architecture == "openai":
-            self.embedding = OpenAIEmbeddings(model = embedding_model,
-                                               api_key = api_keys)
-        else:
-            self.embedding = HuggingFaceEmbeddings(model_name=embedding_model)
+        self.embedding = HuggingFaceEmbeddings(model_name=embedding_model)
 
     def retrieve_data(self, user_input, resolved_ticket_flag):
         
@@ -35,7 +29,7 @@ class RagModel():
                             api_key = self.qdrant_api_key,
                         )
         
-        # THis is for metadata filtering. Only tickets which are Resolved will only be considered.
+        # This is for metadata filtering. Only tickets which are Resolved will only be considered.
         if resolved_ticket_flag:
             filters = models.Filter(must=[models.FieldCondition(
                                 key="metadata.absolute",
@@ -45,31 +39,26 @@ class RagModel():
         else:
             qdrant_retriever = qdrant.as_retriever(search_type="similarity", search_kwargs={"k": self.number_of_doc})
             
-
-        if self.architecture == "openai":
-            template = open_ai_prompt()
-            llm = ChatOpenAI(model=self.model, api_key = self.apikeys)
-        else:
-            template = (                           
-                        """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-                        You are a doctors assistant designed to assist doctor by suggesting possible treatments or vaccinations based on past patients records.
-                        Your task is to analyze the patients details and generate a suggestion based on the past retrieved context patient records.
-                        Past retrieved patient record will have a Risk Group that is Specific risk group (if available else None), Gender, Region. 
-                        
-                        GUIDELINES:
-                        1. Provide suggestion mainly based on retrieved context whether to take a Flu vaccination or not.
-                        2. Keep the reasoning short and to the point by avoiding unnecessary explanations.
-                        3. Avoid repetitive steps—ensure a structured approach.
-                        4. Do not suggest any other vaccine other than Flu vaccination
+        template = (                           
+                    """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+                    You are a doctors assistant designed to assist doctor by suggesting possible treatments or vaccinations based on past patients records.
+                    Your task is to analyze the patients details and generate a suggestion based on the past retrieved context patient records.
+                    Past retrieved patient record will have a Risk Group that is Specific risk group (if available else None), Gender, Region. 
                     
-                        {context}
-                        <|eot_id|>\n<|begin_of_text|><|start_header_id|>user<|end_header_id|>
-                        Based ONLY on the provided tickets, suggest possible solution to the following question:
-                        Question: {input}
-                        Helpful Answer:
-                        <|eot_id|>\n<|begin_of_text|><|start_header_id|>assistant<|end_header_id|>"""
-                        )
-            llm = Together(model=self.model, api_key = self.apikeys, temperature = 0.0)
+                    GUIDELINES:
+                    1. Provide suggestion mainly based on retrieved context whether to take a Flu vaccination or not.
+                    2. Keep the reasoning short and to the point by avoiding unnecessary explanations.
+                    3. Avoid repetitive steps—ensure a structured approach.
+                    4. Do not suggest any other vaccine other than Flu vaccination
+                
+                    {context}
+                    <|eot_id|>\n<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+                    Based ONLY on the provided tickets, suggest possible solution to the following question:
+                    Question: {input}
+                    Helpful Answer:
+                    <|eot_id|>\n<|begin_of_text|><|start_header_id|>assistant<|end_header_id|>"""
+                    )
+        llm = Together(model=self.model, api_key = self.apikeys, temperature = 0.0)
 
         prompt = PromptTemplate(
             template=template, input_variables=["context", "input"]
