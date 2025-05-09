@@ -24,7 +24,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.image("asset/cgm_logo.jpg")
+    st.image("assets/cgm_logo.jpg")
 
 # Retrieves relevant ticket
 def Patient_IMP():

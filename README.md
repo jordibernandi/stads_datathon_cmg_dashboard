@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Analytic Dashboard
 
-## Getting Started
+Developed an analytical dashboard displaying vaccination rates across German regions for the STADS Datathon 24 hours challenge (CGM), featuring analytical graphs and LLM-driven analysis with predictive insights.
 
-First, run the development server:
+## 📋 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This frontend application is built with modern web technologies and provides features including:
+
+- Showcase data distribution accross region in Germany.
+- Showcase some analyticial diagrams based on selected time frame and region.
+- Generate diagrams analytical descriptions with an AI Agent.
+- Provide chat bot related to health.
+
+## 🛠️ Technology Stack
+
+- **Next 15**: React framework library.
+
+- **TypeScript**: For type-safe code
+
+- **TailwindCSS 4**: Utility-first CSS framework for styling
+
+- **Prettier**: For formatting
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v20 or later)
+
+- [pnpm](https://pnpm.io/installation) (recommended) or npm/yarn
+
+### Running Frontend
+
+1\. Install dependencies:
+
+```shellscript
+
+yarn install
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2\. Start the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```shellscript
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+yarn run dev
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+3\. The application will be available at:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```plaintext
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+http://localhost:3000
 
-## Deploy on Vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Running Backend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1\. Install dependencies:
+
+```shellscript
+
+cd backend
+python install -r
+
+```
+
+2\. Start the development server:
+
+```shellscript
+
+python main.py
+
+```
+
+3\. The application will be available at:
+
+```plaintext
+
+http://localhost:5000
+
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
